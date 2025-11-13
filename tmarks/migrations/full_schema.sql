@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS tags (
   user_id TEXT NOT NULL,
   name TEXT NOT NULL,
   color TEXT,
+  click_count INTEGER NOT NULL DEFAULT 0,
+  last_clicked_at TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   deleted_at TEXT,
@@ -87,6 +89,8 @@ CREATE TABLE IF NOT EXISTS tags (
 
 CREATE INDEX idx_tags_user_name ON tags(user_id, LOWER(name));
 CREATE INDEX idx_tags_user_deleted ON tags(user_id, deleted_at);
+CREATE INDEX idx_tags_click_count ON tags(user_id, click_count DESC);
+CREATE INDEX idx_tags_last_clicked ON tags(user_id, last_clicked_at DESC);
 
 -- 书签-标签关联表
 CREATE TABLE IF NOT EXISTS bookmark_tags (
@@ -233,7 +237,7 @@ CREATE TABLE IF NOT EXISTS shares (
   share_token TEXT NOT NULL UNIQUE,
   is_public INTEGER DEFAULT 1,
   view_count INTEGER DEFAULT 0,
-  created_at TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
   expires_at TEXT DEFAULT NULL,
   FOREIGN KEY (group_id) REFERENCES tab_groups(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -253,8 +257,8 @@ CREATE TABLE IF NOT EXISTS statistics (
   items_added INTEGER DEFAULT 0,
   items_deleted INTEGER DEFAULT 0,
   shares_created INTEGER DEFAULT 0,
-  created_at TEXT NOT NULL,
-  updated_at TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -270,7 +274,7 @@ CREATE INDEX idx_statistics_date ON statistics(stat_date);
 CREATE TABLE IF NOT EXISTS registration_limits (
   date TEXT PRIMARY KEY,
   count INTEGER NOT NULL DEFAULT 0,
-  updated_at TEXT NOT NULL
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 -- 迁移记录表
