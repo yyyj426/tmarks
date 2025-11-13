@@ -8,11 +8,11 @@
 [![React](https://img.shields.io/badge/React-18.3%20%7C%2019-61dafb.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.0%20%7C%207-646cff.svg)](https://vitejs.dev/)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-f38020.svg)](https://workers.cloudflare.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![许可证](https://img.shields.io/badge/许可证-MIT-green.svg)](LICENSE)
 
 简体中文
 
-[在线演示](https://tmarks.669696.xyz) | [问题反馈](https://github.com/yourusername/tmarks/issues)
+[在线演示](https://tmarks.669696.xyz) | [问题反馈](https://github.com/ai-tmarks/tmakrs/issues)
 
 </div>
 
@@ -46,7 +46,7 @@ TMarks 是一个现代化的智能书签管理系统，结合 AI 技术自动生
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/yourusername/tmarks.git
+git clone https://github.com/ai-tmarks/tmakrs.git
 cd tmarks
 
 # 2. 安装依赖
@@ -84,33 +84,29 @@ pnpm dev
 ### 快速部署
 
 **前置要求:**
-- Cloudflare账号
-- GitHub账号
-- 安装Wrangler CLI: `npm install -g wrangler`
+- Cloudflare 账号
+- GitHub 账号
+- 安装 Wrangler CLI: `npm install -g wrangler`
 
 **步骤:**
 
-1. **Fork仓库并连接**
-   - Fork本仓库到你的GitHub
-   - 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-   - Workers & Pages → Create → Connect to Git → 选择你的仓库
+1. **Fork 仓库并连接**
+   - Fork 本仓库到你的 GitHub
+   - 登录 [Cloudflare 控制台](https://dash.cloudflare.com/)
+   - Workers & Pages → 创建 → 连接到 Git → 选择你的仓库
 
 2. **配置构建**
-   - Root directory: `tmarks`
-   - Build command: `pnpm install && pnpm build:deploy`
-   - Build output: `.deploy`
+   - 根目录: `tmarks`
+   - 构建命令: `pnpm install && pnpm build:deploy`
+   - 构建输出目录: `.deploy`
 
 3. **创建资源**
-   ```bash
-   wrangler login
-   cd tmarks
-   wrangler d1 create tmarks-prod-db
-   wrangler kv:namespace create "RATE_LIMIT_KV"
-   wrangler kv:namespace create "PUBLIC_SHARE_KV"
-   ```
+   - 创建 D1 数据库: `tmarks-prod-db`
+   - 创建 KV 命名空间: `RATE_LIMIT_KV`
+   - 创建 KV 命名空间: `PUBLIC_SHARE_KV`
 
-4. **配置wrangler.toml**
-   将上一步的ID填入 `tmarks/wrangler.toml`
+4. **配置 wrangler.toml**
+   将上一步的 ID 填入 `tmarks/wrangler.toml`
 
 5. **运行数据库迁移**
    ```bash
@@ -120,18 +116,12 @@ pnpm dev
    ```
 
 6. **配置环境变量**
-   Settings → Environment variables → Production:
+   设置 → 环境变量 → 生产环境:
    - `JWT_SECRET`: `openssl rand -base64 48`
    - `ENCRYPTION_KEY`: `openssl rand -base64 48`
 
-7. **配置资源绑定**
-   Settings → Functions:
-   - D1: `DB` → `tmarks-prod-db`
-   - KV: `RATE_LIMIT_KV` → 选择创建的KV
-   - KV: `PUBLIC_SHARE_KV` → 选择创建的KV
-
-8. **重新部署**
-   Deployments → Retry deployment
+7. **重新部署**
+   部署 → 重试部署
 
 
 ---
